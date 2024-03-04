@@ -92,7 +92,3 @@ if __name__ == "__main__":
 #print(df.sort_values("Affiliations").head())    
 #print(df.sort_values("Affiliations").tail())    
 
-#for i in range(5):
-#    print("----")
-#    print(df.countries.values[i])
-#    print("---")
