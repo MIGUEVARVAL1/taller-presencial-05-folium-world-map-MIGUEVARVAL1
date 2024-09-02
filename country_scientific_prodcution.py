@@ -1,19 +1,19 @@
 """Taller Presencial Evaluable"""
 
-import folium  
 import pandas as pd
-def load_affiliations():
-    df = pd.read_csv(
-        "https://raw.githubusercontent.com/jdvelasq/datalabs/master/datasets/scopus-papers.csv",
-        sep=",",
-        index_col=None,
-    )[["Affiliations"]]
-    return df
+import folium
 
-def remove_na_rows(df):
-    df = df.copy()
-    df = df.dropna(subset=["Affiliations"])
-    return df
+
+def load_affiliations():
+    """Load affiliations from scopus-papers.csvi"""
+    dataframe = pd.read_csv("https://raw.githubusercontent.com/jdvelasq/datalabs/master/datasets/scopus-papers.csv", sep=",", index_col=None)[['Affiliations']]
+    return dataframe
+
+def remove_na_rows(affiliations):
+    """Elimina las filas con valores nulos en la columna 'Affiliations'"""
+    affiliations = affiliations.copy()
+    affiliations = affiliations.dropna(subset=["Affiliations"])
+    return affiliations
 
 def add_countries_column(affiliations):
     """Transforma la columna 'Affiliations' a una lista de paises."""
@@ -31,8 +31,9 @@ def add_countries_column(affiliations):
     affiliations["countries"] = affiliations["countries"].str.join(", ")
 
     return affiliations
-
+  
 def clean_countries(affiliations):
+
     affiliations = affiliations.copy()
     affiliations["countries"] = affiliations["countries"].str.replace(
         "United States", "United States of America"
@@ -40,6 +41,8 @@ def clean_countries(affiliations):
     return affiliations
 
 def count_country_frequency(affiliations):
+    """Cuenta la frecuencia de cada país en la columna 'countries'"""
+
     countries = affiliations["countries"].copy()
     countries = countries.str.split(", ")
     countries = countries.explode()
@@ -63,7 +66,7 @@ def plot_world_map(countries):
         fill_color="Greens",
     ).add_to(m)
     m.save("map.html")
-    
+  
 def main():
     """Función principal"""
     affiliations = load_affiliations()
